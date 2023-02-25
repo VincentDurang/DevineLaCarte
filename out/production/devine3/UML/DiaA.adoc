@@ -1,0 +1,24 @@
+[plantuml]
+----
+class Jeu {
+  avecAide : boolean
+  ----
+  demarre()
+  isMatch(c : Carte) : boolean
+  statistiquesDeLaPartie() : string
+}
+
+class Paquet {
+  nom : String
+  /cardinal : Int
+  ---
+
+}
+
+class Carte {
+  nom
+  couleur
+  /points : Int
+  /valeur : Int
+  ---
+}

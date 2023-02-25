@@ -1,0 +1,81 @@
+= Protocole Http
+:author: Durang Vincent et Pinceel Theo
+:docdate: 2022-10-11
+:asciidoctor-version:1.1
+:description:
+:icons: font
+:listing-caption: Listing
+:toc-title: Les differents challenge:
+:toc: left
+:toclevels: 4
+//:source-highlighter: coderay
+
+Fait par Durang Vincent et Theo Pinceel le 16/10/2022
+
+== Post Challenge
+
+Aprés avoir realiser tous les tests +
+L’utilisation de l’url http://51.68.231.195:8080/ afin de tester l’application
+
+Test des lignes suivantes sur navigateur ::
+http://51.68.231.195:8080/hello +
+résultat: hello inconnu +
+puis http://51.68.231.195:8080/hello?nom=Django +
+résultat: hello Django +
+De nouveau http://51.68.231.195:8080/hello +
+résultat: hello Django
+
+** Objectif realiser le meme scenario avec CMD
+
+== Challenge
+
+Essai 1: ::
+Utiliser le principe de POST +
+transmettre les donnees via POST +
+entre la commande suivante: +
+curl --data nom=Django 51.68.231.195:8080 +
+resultat:{"timestamp":"2022-10-16T19:14:18.849+00:00","status":405,"error":"Method Not Allowed","path":"/"}
+
+nouvelle tentative avec le principe de GET :
+entre la commande suivante: +
+curl --data nom=toto 51.68.231.195:8080 --get +
+resultat: aucun changement
+
+Essai 2 : ::
+Utiliser le principe de “Set-Cookie”
+Essaye de trouver une commande permettant d'enregistrer la valeur dans la clé
+dans le scénario “Key=Value” nom=Django
+
+Commande permettant d'ajouter un cookie : +
+----
+curl -b 'nom=Django' 51.68.231.195:8080
+----
+resultat: aucun changement
+
+Afin de pouvoir afficher les options cookies il faut utiliser -I devant
+source: https://www.ionos.fr/digitalguide/serveur/outils/debuter-avec-curl-sous-linux/
+entre la commande suivante: +
+----
+curl -I 51.68.231.195:8080/hello?nom=Django
+----
+Resultat: +
+----
+C:\Users\vince>curl -I 51.68.231.195:8080/hello?nom=Django
+HTTP/1.1 200
+Set-Cookie: JSESSIONID=6BFD018CD241423AC556E0466C2AFDB8; Path=/; HttpOnly
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 12
+Date: Sun, 16 Oct 2022 19:44:12 GMT
+----
+
+On peut recuperer id du Set-Cookie (JSESSIONID=6BFD018CD241423AC556E0466C2AFDB8) +
+le "-b" permet d'utliser le cookie (-b "Set-Cookie")
+entre la commande suivantes: +
+----
+curl 51.68.231.195:8080/hello -b "JSESSIONID=6BFD018CD241423AC556E0466C2AFDB8"
+----
+resulat:
+----
+Hello Django
+----
+le resultat suit bien le scenario, la solution avec cookie reste correct mais pas optimal du à ces inconvenients.
